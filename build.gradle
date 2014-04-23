@@ -1,0 +1,10 @@
+
+
+task compileHaskell(type: Exec) {
+  file('build/executables').mkdirs()
+  file('build/tmp').mkdirs()
+
+  commandLine 'ghc', '-o', "$project.buildDir/executables/$project.name", '-O2', '-Wall', '-outputdir', "$project.buildDir/tmp", 'src/main/haskell/Main.hs'
+
+  inputs.dir file('src/main/haskell')
+}
