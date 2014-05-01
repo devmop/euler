@@ -2,7 +2,7 @@ import Data.List
 import Data.Char
 
 main :: IO()
-main = putStrLn $ show euler12
+main = putStrLn $ show euler20
 
 euler1 = sum $ filter (multipleOf3 `merge` multipleOf5) [1..999]
 
@@ -28,6 +28,14 @@ euler12 = head $ dropWhile ((500>).length) (map divisors triangleNumbers)
 
 euler13 = sum euler13Ints
 
+euler14 = snd.maximum $ [(collatzSequence n, n) | n <-[1..999999]]
+
+euler15 = 40 `choose` 20
+
+euler16 = sum $ map digitToInt $ show (2 ^ 1000)
+
+euler20 = sum $ map digitToInt $ show (fact 100)
+
 multipleOf3 :: Integer -> Bool
 multipleOf3 x = 3 `divides` x
 
@@ -39,6 +47,13 @@ merge f g x = (f x) || (g x)
 
 fibs :: [Integer]
 fibs = fibProducer 0 1
+
+choose :: Integer -> Integer -> Integer
+choose a b = (fact a) `div` ((fact b) * (fact (a - b)))
+
+fact :: Integer -> Integer
+fact n = rec 1 n where rec x 1 = x
+                       rec x n = rec (x*n) (n-1)
 
 fibProducer :: Integer -> Integer -> [Integer]
 fibProducer a b = a : (fibProducer b (a+b))
@@ -81,8 +96,24 @@ dividesByAll :: [Integer] -> Integer -> Bool
 dividesByAll [] n = True
 dividesByAll (x:xs) n = if x `divides` n then dividesByAll xs n else False
 
-divides :: Integer -> Integer -> Bool
+divides :: Integral a => a -> a -> Bool
 divides a b = b `mod` a == 0
+
+maxIndex [] = -1
+maxIndex xs = maxIndexRec 0 0 xs
+
+maxIndexRec i best xs
+  | i == length xs = best
+  | otherwise = let newBest = if xs !! i > xs !! best then i else best in maxIndexRec (i+1) newBest xs
+
+collatzSequence :: Integer -> Integer
+collatzSequence n = rec 1 n where rec x 1 = x
+                                  rec x n = rec (x+1) (collatz n)                                                        
+
+collatz :: Integer -> Integer
+collatz n
+  | 2 `divides` n = n `div` 2
+  | otherwise = (3*n) + 1
 
 divisors n = detuple $ map (\x -> (x, n `div` x)) $ filter (swap divides n) $ takeWhile (\x -> x*x <= n) [1..n]
 
@@ -130,7 +161,7 @@ input = map digitToInt "\
 \71636269561882670428252483600823257530420752963450"
 
 euler13Ints :: [Integer]
-euler13Ints = map read $ unlines "\
+euler13Ints = map read $ lines "\
 \37107287533902102798797998220837590246510135740250\n\
 \46376937677490009712648124896970078050417018260538\n\
 \74324986199524741059474233309513058123726617309629\n\
