@@ -1,8 +1,34 @@
 import Data.List
 import Data.Char
+import Control.Applicative
+import System.Environment
 
 main :: IO()
-main = putStrLn $ show euler20
+main = putStrLn =<< (solutions!!) <$> read <$> head <$> getArgs
+
+solutions = ["No such problem", 
+  show euler1,
+  show euler2,
+  show euler3,
+  show euler4,
+  show euler5,
+  show euler6, 
+  show euler7,
+  show euler8,
+  show euler9,
+  show euler10, 
+  show unsolved,
+  show euler12,
+  show euler13,
+  show euler14,
+  show euler15,
+  show euler16,
+  show unsolved,
+  show unsolved,
+  show unsolved,
+  show euler20]
+
+unsolved = "Not implemented"
 
 euler1 = sum $ filter (multipleOf3 `merge` multipleOf5) [1..999]
 

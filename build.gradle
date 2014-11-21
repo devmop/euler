@@ -2,8 +2,8 @@
 
 task compileHaskell(type: Exec) {
   doFirst {
-    file('build/executables').mkdirs()
-    file('build/tmp').mkdirs()
+    file("$buildDir/executables").mkdirs()
+    file("$buildDir/tmp").mkdirs()
   }
 
   commandLine 'ghc', '-o', "$project.buildDir/executables/$project.name", '-O2', '-Wall', '-package', 'ghc', '-outputdir', "$project.buildDir/tmp", '-rtsopts', 'src/main/haskell/Main.hs'
