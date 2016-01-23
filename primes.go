@@ -28,8 +28,8 @@ func Primes(n uint64) []uint64 {
 
 	for x := uint64(3); x*x <= n; x += 2 {
 		prime := true
-		for _, v := range primes {
-			if x%v == 0 {
+		for i := 1; i < len(primes) && primes[i]*primes[i] <= x; i++ {
+			if x%primes[i] == 0 {
 				prime = false
 				break
 			}
